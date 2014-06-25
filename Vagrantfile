@@ -8,12 +8,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.omnibus.chef_version = :latest
 
-  config.vm.define :default do |config|
-    config.vm.box = 'opscode-centos-6.5'
-    config.vm.box_url = 'http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box'
-    config.vm.hostname = 'default'
+  %w{:vm1 :vm2}.each do |name|
+    config.vm.define name do |config|
+      config.vm.box = 'opscode-centos-6.5'
+      config.vm.box_url = 'http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box'
+      config.vm.hostname = name.to_s
+    end
   end
-
   config.vm.provision "chef_client" do |chef|
     chef.chef_server_url = "https://api.opscode.com/organizations/nri_test01"
     chef.validation_key_path = File.expand_path("../.chef/nri_test01-validator.pem", __FILE__)
