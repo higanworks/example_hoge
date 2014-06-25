@@ -8,11 +8,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.omnibus.chef_version = :latest
 
-  %w{:vm1 :vm2}.each do |name|
-    config.vm.define name do |config|
+  %w{vm1 vm2}.each do |name|
+    config.vm.define name.to_sym do |config|
       config.vm.box = 'opscode-centos-6.5'
       config.vm.box_url = 'http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box'
-      config.vm.hostname = name.to_s
+      config.vm.hostname = name
     end
   end
   config.vm.provision "chef_client" do |chef|
